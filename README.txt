@@ -114,21 +114,21 @@ chat.command.Command
     - chat.command.InsertTaskCommand
     - chat.command.UpdateTaskCommand
     - chat.command.DeleteTaskCommand
-    - chat.command.MarkAsDoneTaskCommand
-    - chat.command.MarkAsUndoneTaskCommand
+    - chat.command.MarkTaskAsDoneCommand
+    - chat.command.MarkTaskAsUndoneCommand
     - chat.command.EraseTaskListCommand
     - chat.command.SetUserNameCommand
 
 ChatApp#main
   - o método "main" deve receber como argumento (o único argumento) a String que deve ser a chave do chatbot, utilizado para comunicação com o Telegram.
-    - validar se foi fornecido este único argumento, caso não for, lanção exceção indicando o problema
-    - envelopar o método main no contexto da instanciação do TelegramBot, para caso a chave de comunicação com a API (REST Api) do Telegram não seja válida, então exceção mencionando o problema deve ser lançado
+    - validar se foi fornecido este único argumento, caso não for, lançao exceção indicando o problema
+    - envelopar o método main no contexto da instanciação do TelegramBot, para caso a chave de comunicação com a API (REST Api) do Telegram não seja válida, então lançar exceção mencionando o problema
       - NOTA: para conseguir válidar se o botToken fornecido é válido, é necessário fazer uma requisição de GetUpdatesResponse e verificar na instância retornada se a resposta está ok; GetUpdatesResponse#isOk():boolean
 
 ChatMessageConsumer
   - este componente deve ter uma única instância e ser executado na Thread principal
   - a responsabilidade deste componente é a de iterar sobre um loop infinito de 1 em 1 segundo procurando por mensagens recebidas para o ChatBot via a API Rest do Telegram; TelegramBot#execute(new GetUpdates().limit($limit).offset($offset))
-  - as mensagens/paylodas (PayloadCommand, comandos texto livre) recebidas devem ser passadas integralmente para instância CommandProducer descriminada abaixo
+  - as mensagens/payloads (PayloadCommand, comandos texto livre) recebidas devem ser passadas integralmente para instância CommandProducer descriminada abaixo
     - NOTA: a lista de mensagens/payloads recuperados estarão disponíveis através do trecho; GetUpdatesResponse#updates():List<Update>
     - NOTA: para cada instância existente na recuperada List<Update>, deve ser instanciado um PayloadCommand, sendo fornecido as informações chatId e plainText, para que estas instâncias cheguem até as instâncias concretas de chat.command.Command, para efetuarem suas atividades
 
@@ -140,6 +140,6 @@ PayloadCommand
 
 CommandProducer
   - só deve haver uma única instância deste componente e deve ser executado na Thread principal (Thread#Main)
-  - este componente tem a responsabilidade básica de manter comunicação das mensagens/payloads que estão chegando na Thread principal (Thread#Main) e disponibilizar estas mensagens (PayloadCommand) para os todas as instâncias concretas de chat.command.Command que estão sendo executadas, cada uma na sua thread específica
+  - este componente tem a responsabilidade básica de manter comunicação das mensagens/payloads que estão chegando na Thread principal (Thread#Main) e disponibilizar estas mensagens (PayloadCommand) para todas as instâncias concretas de chat.command.Command que estão sendo executadas, cada uma na sua thread específica
   - na inicialização do componente CommandProducer, este deve procurar por toda classe concreta de chat.command.Command, instanciar cada uma destas classes, e obter de cada uma a instância de BlockingQueue<PayloadCommand>; getBlockingQueue():BlockingQueue<PayloadCommand>
   - o componente CommandProducer deve manter num conjunto (Set<BlockingQueue<PayloadCommand>>) todas as instâncias de BlockingQueue retornada de cada classe concreta de chat.command.Command instanciada, e toda vez que uma mensagem/payload (PayloadCommand, comando texto livre) chegar, deve-se disponibilizar este ultimo para todos itens no conjunto de BlockingQueue mantido no CommandProducer

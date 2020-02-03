@@ -1,4 +1,4 @@
-package org.fiap.test;
+package org.telegram.chatbot.tasks;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.TelegramBotAdapter;
@@ -30,14 +30,17 @@ public class App {
         BaseResponse baseResponse;
 
         //controle de off-set, isto é, a partir deste ID será lido as mensagens pendentes na fila
-        int m = 0;
+        int offset = 0;
 
         //loop infinito pode ser alterado por algum timer de intervalo curto
         while (true) {
             System.out.println("still running... on thread; " + Thread.currentThread().getName());
 
             //executa comando no Telegram para obter as mensagens pendentes a partir de um off-set (limite inicial)
-            updatesResponse = bot.execute(new GetUpdates().limit(100).offset(m));
+            updatesResponse = bot.execute(new GetUpdates().limit(100).offset(offset));
+            if (!updatesResponse.isOk()) {
+                throw new IllegalStateException("It was not possible retrieve Updates from Telegram REST Api, maybe the \"botToken\" is not right/valid.");
+            }
 
             //lista de mensagens
             List<Update> updates = updatesResponse.updates();
@@ -46,7 +49,7 @@ public class App {
             for (Update update : updates) {
 
                 //atualização do off-set
-                m = update.updateId() + 1;
+                offset = update.updateId() + 1;
 
                 System.out.println("Recebendo mensagem:" + update.message().text());
                 System.out.println("Msg Id; " + update.message().chat().id());
