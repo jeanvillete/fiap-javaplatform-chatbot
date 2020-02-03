@@ -6,6 +6,9 @@ import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 class HelpCommand implements Command {
 
@@ -34,24 +37,35 @@ class HelpCommand implements Command {
             while ((payloadCommand = this.blockingQueue.take()) != null) {
                 String plainText = payloadCommand.getPlainText();
 
+                StringBuilder stringBuilder = new StringBuilder();
                 if (!isItAValidCommand(plainText)) {
-                    continue;
-                }
-                if (!checkRegexForCurrentConcreteCommandInstance(plainText)) {
-                    continue;
+                    stringBuilder.append("Ops, num entendi o que você quis dizer com \"" + plainText + "\" \n\n");
                 }
 
-                this.telegramBot.execute(
-                        new SendMessage(
-                                payloadCommand.getChatId(),
-                                "Ok, vou tratar devidament sua requisição para o comando /ajuda"
-                        )
-                );
-                // TODO acessar o ChatSessionManagement e obter todos elementos ChatSession presentes que existem para
-                    // payloadCommand#getChatId, e printar via comando TelegramBot#execute(new SendMessage...)
+                if (!anyConcreteCommandMatchesRegex(plainText) || checkRegexForCurrentConcreteCommandInstance(plainText)) {
+                    stringBuilder.append("/ajuda [comando para opções possíveis]; \n");
+
+                    this.telegramBot.execute(
+                            new SendMessage(
+                                    payloadCommand.getChatId(),
+                                    stringBuilder.toString() +
+                                            INSTANCES.stream()
+                                                    .map(Command::getRegexCommand)
+                                                    .collect(Collectors.joining("\n"))
+                            )
+                    );
+                }
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean anyConcreteCommandMatchesRegex(String plainText) {
+        return INSTANCES.stream()
+                .map(Command::getRegexCommand)
+                .map(Pattern::compile)
+                .map(pattern -> pattern.matcher(plainText))
+                .anyMatch(Matcher::matches);
     }
 }

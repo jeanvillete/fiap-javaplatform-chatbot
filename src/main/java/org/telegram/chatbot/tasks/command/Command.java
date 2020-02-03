@@ -5,10 +5,14 @@ import org.reflections.Reflections;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 import org.telegram.chatbot.tasks.command.producer.CommandProducer;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.regex.Pattern;
 
 public interface Command extends Runnable {
+
+    Set<Command> INSTANCES = new HashSet<>();
 
     static void hookupListeners(CommandProducer commandProducer, TelegramBot telegramBot) {
         new Reflections(Command.class.getPackage().getName())
@@ -21,6 +25,7 @@ public interface Command extends Runnable {
                         throw new RuntimeException(e);
                     }
                 })
+                .peek(INSTANCES::add)
                 .peek(concreteCommandInstance -> concreteCommandInstance.setTelegramBot(telegramBot))
                 .peek(concreteCommandInstance -> commandProducer.hookupBlockingQueue(concreteCommandInstance.getBlockingQueue()))
                 .map(Thread::new)
