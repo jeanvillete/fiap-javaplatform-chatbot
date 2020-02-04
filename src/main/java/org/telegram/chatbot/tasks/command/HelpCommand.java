@@ -3,6 +3,7 @@ package org.telegram.chatbot.tasks.command;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,8 +11,8 @@ import java.util.stream.Collectors;
 
 class HelpCommand extends Command {
 
-    public HelpCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer) {
-        super(telegramBot, commandsInitializer);
+    public HelpCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer, ChatSessionManagement chatSessionManagement) {
+        super(telegramBot, commandsInitializer, chatSessionManagement);
     }
 
     @Override
@@ -28,7 +29,10 @@ class HelpCommand extends Command {
 
                 StringBuilder stringBuilder = new StringBuilder();
                 if (!isItAValidCommand(plainText)) {
-                    stringBuilder.append("Ops, num entendi o que você quis dizer com \"" + plainText + "\" \n\n");
+                    stringBuilder
+                            .append("Ops, num entendi o que você quis dizer com \"")
+                            .append(plainText)
+                            .append("\" \n\n");
                 }
 
                 if (!anyConcreteCommandMatchesRegex(plainText) || checkRegexForCurrentConcreteCommandInstance(plainText)) {

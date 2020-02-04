@@ -17,11 +17,16 @@ public class ChatApp {
         String botToken = args[0];
         TelegramBot telegramBot = TelegramBotAdapter.build(botToken);
 
-        ChatSessionManagement chatSessionManagement = new ChatSessionManagement();
-
         CommandProducer commandProducer = new CommandProducer();
-        new CommandsInitializer(commandProducer, telegramBot);
+        new CommandsInitializer(
+                commandProducer,
+                telegramBot,
+                new ChatSessionManagement()
+        );
 
-        new ChatMessageConsumer(telegramBot, commandProducer).consumeIndefinitely();
+        new ChatMessageConsumer(
+                telegramBot,
+                commandProducer
+        ).consumeIndefinitely();
     }
 }

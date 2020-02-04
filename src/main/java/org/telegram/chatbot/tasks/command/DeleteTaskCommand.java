@@ -3,11 +3,12 @@ package org.telegram.chatbot.tasks.command;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 class DeleteTaskCommand extends Command {
 
-    public DeleteTaskCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer) {
-        super(telegramBot, commandsInitializer);
+    public DeleteTaskCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer, ChatSessionManagement chatSessionManagement) {
+        super(telegramBot, commandsInitializer, chatSessionManagement);
     }
 
     @Override

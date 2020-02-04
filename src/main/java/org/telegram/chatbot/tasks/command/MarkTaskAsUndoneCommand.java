@@ -3,11 +3,12 @@ package org.telegram.chatbot.tasks.command;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 class MarkTaskAsUndoneCommand extends Command {
 
-    public MarkTaskAsUndoneCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer) {
-        super(telegramBot, commandsInitializer);
+    public MarkTaskAsUndoneCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer, ChatSessionManagement chatSessionManagement) {
+        super(telegramBot, commandsInitializer, chatSessionManagement);
     }
 
     @Override
