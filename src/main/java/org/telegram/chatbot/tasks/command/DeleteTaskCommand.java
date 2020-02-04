@@ -3,7 +3,11 @@ package org.telegram.chatbot.tasks.command;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.exception.ChatNotFoundException;
 import org.telegram.chatbot.tasks.session.ChatSessionManagement;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class DeleteTaskCommand extends Command {
 
@@ -30,14 +34,30 @@ class DeleteTaskCommand extends Command {
                     continue;
                 }
 
+                Matcher matcher = Pattern.compile(getRegexCommand()).matcher(plainText);
+                matcher.matches();
+                String taskId = matcher.group(2);
+
+                boolean removed;
+                try {
+                    removed = this.getChatSessionManagement().deleteTask(
+                            payloadCommand.getChatId(),
+                            taskId
+                    );
+                } catch (ChatNotFoundException e) {
+                    removed = false;
+                }
+
+                String returningTextMsg = removed ?
+                        "Pronto, tarefa com id [" + taskId + "] removida.":
+                        "Tarefa com id [" + taskId + "] não foi removida porque não foi encontrada..";
+
                 this.getTelegramBot().execute(
                         new SendMessage(
                                 payloadCommand.getChatId(),
-                                "Ok, vou tratar devidament sua requisição para o comando /remover"
+                                returningTextMsg
                         )
                 );
-                // TODO acessar o ChatSessionManagement e obter todos elementos ChatSession presentes que existem para
-                // payloadCommand#getChatId, e printar via comando TelegramBot#execute(new SendMessage...)
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

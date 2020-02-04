@@ -1,5 +1,7 @@
 package org.telegram.chatbot.tasks.session;
 
+import org.telegram.chatbot.tasks.exception.ChatNotFoundException;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -29,5 +31,13 @@ public class ChatSessionManagement {
                 .orElse(Stream.empty())
                 .map(Task::toString)
                 .collect(Collectors.joining("\n"));
+    }
+
+    public boolean deleteTask(Long chatId, String taskId) {
+        ChatSession chatSession = this.chatSessionMap.get(chatId);
+        if (chatSession == null) {
+            throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
+        }
+        return chatSession.deleteTask(taskId);
     }
 }

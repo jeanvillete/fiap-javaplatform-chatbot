@@ -24,6 +24,10 @@ class ChatSession {
         return this;
     }
 
+    boolean deleteTask(String taskId) {
+        return this.tasks.removeIf(task -> task.getId().equals(taskId));
+    }
+
     Set<Task> getTasks() {
         return Collections.unmodifiableSet(this.tasks);
     }
