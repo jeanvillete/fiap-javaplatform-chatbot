@@ -4,34 +4,22 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+class ListTaskCommand extends Command {
 
-class ListTaskCommand implements Command {
-
-    private BlockingQueue<PayloadCommand> blockingQueue = new LinkedBlockingQueue<>();
-    private TelegramBot telegramBot;
+    public ListTaskCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer) {
+        super(telegramBot, commandsInitializer);
+    }
 
     @Override
-    public String getRegexCommand() {
+    String getRegexCommand() {
         return "^\\/listar$";
-    }
-
-    @Override
-    public BlockingQueue<PayloadCommand> getBlockingQueue() {
-        return blockingQueue;
-    }
-
-    @Override
-    public void setTelegramBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
     }
 
     @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;
-            while ((payloadCommand = this.blockingQueue.take()) != null) {
+            while ((payloadCommand = this.getBlockingQueue().take()) != null) {
                 String plainText = payloadCommand.getPlainText();
 
                 if (!isItAValidCommand(plainText)) {
@@ -41,7 +29,7 @@ class ListTaskCommand implements Command {
                     continue;
                 }
 
-                this.telegramBot.execute(
+                this.getTelegramBot().execute(
                         new SendMessage(
                                 payloadCommand.getChatId(),
                                 "Ok, vou tratar devidament sua requisição para o comando /listar"

@@ -2,10 +2,11 @@ package org.telegram.chatbot.tasks;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.TelegramBotAdapter;
-import org.telegram.chatbot.tasks.command.Command;
+import org.telegram.chatbot.tasks.command.CommandsInitializer;
 import org.telegram.chatbot.tasks.command.producer.CommandProducer;
 import org.telegram.chatbot.tasks.consumer.ChatMessageConsumer;
 import org.telegram.chatbot.tasks.exception.ChatBadResponseException;
+import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 public class ChatApp {
     public static void main(String[] args) throws ChatBadResponseException, InterruptedException {
@@ -16,8 +17,10 @@ public class ChatApp {
         String botToken = args[0];
         TelegramBot telegramBot = TelegramBotAdapter.build(botToken);
 
+        ChatSessionManagement chatSessionManagement = new ChatSessionManagement();
+
         CommandProducer commandProducer = new CommandProducer();
-        Command.hookupListeners(commandProducer, telegramBot);
+        new CommandsInitializer(commandProducer, telegramBot);
 
         new ChatMessageConsumer(telegramBot, commandProducer).consumeIndefinitely();
     }

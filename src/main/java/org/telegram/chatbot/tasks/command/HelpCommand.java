@@ -4,37 +4,26 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-class HelpCommand implements Command {
+class HelpCommand extends Command {
 
-    private BlockingQueue<PayloadCommand> blockingQueue = new LinkedBlockingQueue<>();
-    private TelegramBot telegramBot;
+    public HelpCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer) {
+        super(telegramBot, commandsInitializer);
+    }
 
     @Override
-    public String getRegexCommand() {
+    String getRegexCommand() {
         return "^\\/ajuda$";
-    }
-
-    @Override
-    public BlockingQueue<PayloadCommand> getBlockingQueue() {
-        return blockingQueue;
-    }
-
-    @Override
-    public void setTelegramBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
     }
 
     @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;
-            while ((payloadCommand = this.blockingQueue.take()) != null) {
+            while ((payloadCommand = this.getBlockingQueue().take()) != null) {
                 String plainText = payloadCommand.getPlainText();
 
                 StringBuilder stringBuilder = new StringBuilder();
@@ -45,11 +34,12 @@ class HelpCommand implements Command {
                 if (!anyConcreteCommandMatchesRegex(plainText) || checkRegexForCurrentConcreteCommandInstance(plainText)) {
                     stringBuilder.append("/ajuda [comando para opções possíveis]; \n");
 
-                    this.telegramBot.execute(
+                    this.getTelegramBot().execute(
                             new SendMessage(
                                     payloadCommand.getChatId(),
                                     stringBuilder.toString() +
-                                            INSTANCES.stream()
+                                            getCommandsInitializer().getConcreteInstanceSetOfCommands()
+                                                    .stream()
                                                     .map(Command::getRegexCommand)
                                                     .collect(Collectors.joining("\n"))
                             )
@@ -62,7 +52,8 @@ class HelpCommand implements Command {
     }
 
     private boolean anyConcreteCommandMatchesRegex(String plainText) {
-        return INSTANCES.stream()
+        return getCommandsInitializer().getConcreteInstanceSetOfCommands()
+                .stream()
                 .map(Command::getRegexCommand)
                 .map(Pattern::compile)
                 .map(pattern -> pattern.matcher(plainText))
