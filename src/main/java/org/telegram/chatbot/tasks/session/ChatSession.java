@@ -32,4 +32,7 @@ class ChatSession {
         return Collections.unmodifiableSet(this.tasks);
     }
 
+    public void cleanTaskList(Long chatId) {
+        this.tasks.clear();
+    }
 }

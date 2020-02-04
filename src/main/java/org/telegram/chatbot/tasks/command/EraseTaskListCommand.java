@@ -3,6 +3,7 @@ package org.telegram.chatbot.tasks.command;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.exception.ChatNotFoundException;
 import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 class EraseTaskListCommand extends Command {
@@ -30,14 +31,23 @@ class EraseTaskListCommand extends Command {
                     continue;
                 }
 
+                boolean cleaned;
+                try {
+                    cleaned = this.getChatSessionManagement().cleanTaskList(payloadCommand.getChatId());
+                } catch (ChatNotFoundException e) {
+                    cleaned = false;
+                }
+
+                String returningTextMsg = cleaned ?
+                        "Feito, a lista de tarefas foi zerada.":
+                        "Não foi encontrado nenhuma tarefa ou lista par ser limpada.";
+
                 this.getTelegramBot().execute(
                         new SendMessage(
                                 payloadCommand.getChatId(),
-                                "Ok, vou tratar devidament sua requisição para o comando /limpar"
+                                returningTextMsg
                         )
                 );
-                // TODO acessar o ChatSessionManagement e obter todos elementos ChatSession presentes que existem para
-                // payloadCommand#getChatId, e printar via comando TelegramBot#execute(new SendMessage...)
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

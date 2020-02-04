@@ -40,4 +40,13 @@ public class ChatSessionManagement {
         }
         return chatSession.deleteTask(taskId);
     }
+
+    public boolean cleanTaskList(Long chatId) {
+        ChatSession chatSession = this.chatSessionMap.get(chatId);
+        if (chatSession == null) {
+            throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
+        }
+        chatSession.cleanTaskList(chatId);
+        return true;
+    }
 }

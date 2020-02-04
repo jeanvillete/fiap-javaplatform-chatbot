@@ -50,7 +50,7 @@ class DeleteTaskCommand extends Command {
 
                 String returningTextMsg = removed ?
                         "Pronto, tarefa com id [" + taskId + "] removida.":
-                        "Tarefa com id [" + taskId + "] não foi removida porque não foi encontrada..";
+                        "Tarefa com id [" + taskId + "] não foi removida porque não foi encontrada.";
 
                 this.getTelegramBot().execute(
                         new SendMessage(
