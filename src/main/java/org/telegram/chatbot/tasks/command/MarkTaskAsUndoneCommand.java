@@ -22,6 +22,11 @@ class MarkTaskAsUndoneCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/uncheck:id_tarefa [marca tarefa como NÃO PRONTA, baseado no seu id]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

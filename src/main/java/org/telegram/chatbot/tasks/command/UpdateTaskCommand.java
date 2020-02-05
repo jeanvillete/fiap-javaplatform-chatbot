@@ -22,6 +22,11 @@ class UpdateTaskCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/alterar:id_tarefa novo texto [altera a descrição de uma tarefa baseado no seu id]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

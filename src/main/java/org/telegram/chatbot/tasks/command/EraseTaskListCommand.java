@@ -18,6 +18,11 @@ class EraseTaskListCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/limpar [zera a lista de tarefas]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

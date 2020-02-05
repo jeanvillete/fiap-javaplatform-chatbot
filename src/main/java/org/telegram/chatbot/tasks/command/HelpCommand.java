@@ -21,6 +21,11 @@ class HelpCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/ajuda [listagem dos comandos disponíveis]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;
@@ -36,16 +41,15 @@ class HelpCommand extends Command {
                 }
 
                 if (!anyConcreteCommandMatchesRegex(plainText) || checkRegexForCurrentConcreteCommandInstance(plainText)) {
-                    stringBuilder.append("/ajuda [comando para opções possíveis]; \n");
-
                     this.getTelegramBot().execute(
                             new SendMessage(
                                     payloadCommand.getChatId(),
                                     stringBuilder.toString() +
                                             getCommandsInitializer().getConcreteInstanceSetOfCommands()
                                                     .stream()
-                                                    .map(Command::getRegexCommand)
-                                                    .collect(Collectors.joining("\n"))
+                                                    .map(Command::printHelp)
+                                                    .sorted()
+                                                    .collect(Collectors.joining("\n\n"))
                             )
                     );
                 }

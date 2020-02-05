@@ -22,6 +22,11 @@ class MarkTaskAsDoneCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/check:id_tarefa [marca tarefa como pronta, baseado no seu id]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

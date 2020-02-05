@@ -20,6 +20,11 @@ class InsertTaskCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/nova descrição tarefa [insere uma nova tarefa]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

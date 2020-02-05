@@ -55,4 +55,5 @@ abstract class Command implements Runnable {
 
     abstract String getRegexCommand();
 
+    abstract String printHelp();
 }

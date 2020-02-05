@@ -22,6 +22,11 @@ class DeleteTaskCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/remover:id_tarefa [remove uma tarefa baseado no seu id]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;

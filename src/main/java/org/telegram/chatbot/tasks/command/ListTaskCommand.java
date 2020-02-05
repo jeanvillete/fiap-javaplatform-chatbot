@@ -17,6 +17,11 @@ class ListTaskCommand extends Command {
     }
 
     @Override
+    String printHelp() {
+        return "/listar [lista todas as tarefas registradas, com seus ids, status e descrições]";
+    }
+
+    @Override
     public void run() {
         try {
             PayloadCommand payloadCommand;
