@@ -1,5 +1,7 @@
 package org.telegram.chatbot.tasks.session;
 
+import org.telegram.chatbot.tasks.exception.TaskNotFoundException;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
@@ -34,5 +36,21 @@ class ChatSession {
 
     public void cleanTaskList(Long chatId) {
         this.tasks.clear();
+    }
+
+    public void markTaskAsDone(String taskId) {
+        this.tasks.stream()
+                .filter(_task -> _task.getId().equals(taskId))
+                .findFirst()
+                .orElseThrow(() -> new TaskNotFoundException("No task was found for the provided id = [" + taskId + "]"))
+                .setDone(Boolean.TRUE);
+    }
+
+    public void markTaskAsUndone(String taskId) {
+        this.tasks.stream()
+                .filter(_task -> _task.getId().equals(taskId))
+                .findFirst()
+                .orElseThrow(() -> new TaskNotFoundException("No task was found for the provided id = [" + taskId + "]"))
+                .setDone(Boolean.FALSE);
     }
 }

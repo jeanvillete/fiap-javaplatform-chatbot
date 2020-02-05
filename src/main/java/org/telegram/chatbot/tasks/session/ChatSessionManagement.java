@@ -49,4 +49,22 @@ public class ChatSessionManagement {
         chatSession.cleanTaskList(chatId);
         return true;
     }
+
+    public void markTaskAsDone(Long chatId, String taskId) {
+        ChatSession chatSession = this.chatSessionMap.get(chatId);
+        if (chatSession == null) {
+            throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
+        }
+
+        chatSession.markTaskAsDone(taskId);
+    }
+
+    public void markTaskAsUndone(Long chatId, String taskId) {
+        ChatSession chatSession = this.chatSessionMap.get(chatId);
+        if (chatSession == null) {
+            throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
+        }
+
+        chatSession.markTaskAsUndone(taskId);
+    }
 }

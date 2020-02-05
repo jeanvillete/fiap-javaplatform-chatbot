@@ -26,7 +26,7 @@ class Task {
 
     @Override
     public String toString() {
-        return "[" + id + "] pronta=" + (done ? "sim" : "não") + ", descrição=" + description;
+        return "[" + id + "] pronta=" + (done ? "SIM" : "NÃO") + ", descrição=" + description;
     }
 
     // GETTERS AND SETTERS [default access modifier] //

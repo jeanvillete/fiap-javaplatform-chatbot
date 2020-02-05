@@ -53,9 +53,14 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
   e.g;
     /remover:23
 
-/pronta:$id_tarefa
+/check:$id_tarefa
   - marca tarefa com o identificador fornecido como pronta
-  - listar todas as tarefas atualmente cadastradas para o usuário corrente
+  - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
+  e.g;
+    /pronta:23
+
+/uncheck:$id_tarefa
+  - marca tarefa com o identificador fornecido como NÃO pronta
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
   e.g;
     /pronta:23
