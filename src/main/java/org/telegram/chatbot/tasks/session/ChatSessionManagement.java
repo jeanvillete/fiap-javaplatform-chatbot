@@ -33,12 +33,13 @@ public class ChatSessionManagement {
                 .collect(Collectors.joining("\n"));
     }
 
-    public boolean deleteTask(Long chatId, String taskId) {
+    public void deleteTask(Long chatId, String taskId) {
         ChatSession chatSession = this.chatSessionMap.get(chatId);
         if (chatSession == null) {
             throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
         }
-        return chatSession.deleteTask(taskId);
+
+        chatSession.deleteTask(taskId);
     }
 
     public boolean cleanTaskList(Long chatId) {
@@ -66,5 +67,14 @@ public class ChatSessionManagement {
         }
 
         chatSession.markTaskAsUndone(taskId);
+    }
+
+    public void updateTaskDescription(Long chatId, String taskId, String taskDescription) {
+        ChatSession chatSession = this.chatSessionMap.get(chatId);
+        if (chatSession == null) {
+            throw new ChatNotFoundException("No chat session instance was found for chatId=[" + chatId + "]");
+        }
+
+        chatSession.updateTaskDescription(taskId, taskDescription);
     }
 }

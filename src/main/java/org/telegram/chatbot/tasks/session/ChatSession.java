@@ -26,19 +26,22 @@ class ChatSession {
         return this;
     }
 
-    boolean deleteTask(String taskId) {
-        return this.tasks.removeIf(task -> task.getId().equals(taskId));
+    void deleteTask(String taskId) {
+        boolean removedAnyItem = this.tasks.removeIf(task -> task.getId().equals(taskId));
+        if (!removedAnyItem) {
+            throw new TaskNotFoundException("No task was found for the provided id = [" + taskId + "]");
+        }
     }
 
     Set<Task> getTasks() {
         return Collections.unmodifiableSet(this.tasks);
     }
 
-    public void cleanTaskList(Long chatId) {
+    void cleanTaskList(Long chatId) {
         this.tasks.clear();
     }
 
-    public void markTaskAsDone(String taskId) {
+    void markTaskAsDone(String taskId) {
         this.tasks.stream()
                 .filter(_task -> _task.getId().equals(taskId))
                 .findFirst()
@@ -46,11 +49,19 @@ class ChatSession {
                 .setDone(Boolean.TRUE);
     }
 
-    public void markTaskAsUndone(String taskId) {
+    void markTaskAsUndone(String taskId) {
         this.tasks.stream()
                 .filter(_task -> _task.getId().equals(taskId))
                 .findFirst()
                 .orElseThrow(() -> new TaskNotFoundException("No task was found for the provided id = [" + taskId + "]"))
                 .setDone(Boolean.FALSE);
+    }
+
+    void updateTaskDescription(String taskId, String taskDescription) {
+        this.tasks.stream()
+                .filter(_task -> _task.getId().equals(taskId))
+                .findFirst()
+                .orElseThrow(() -> new TaskNotFoundException("No task was found for the provided id = [" + taskId + "]"))
+                .setDescription(taskDescription);
     }
 }
