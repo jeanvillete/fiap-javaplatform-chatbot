@@ -9,6 +9,15 @@ Prof. Danilo Vitoriano
 
 ---
 
+[instrução de execução]
+
+Após efetuar o checkout do código, utilize o comando abaixo para excução da aplicação.
+  NOTA: Requisitos, maven e Java 8.
+
+$ mvn exec:java -Dexec.mainClass="org.telegram.chatbot.tasks.ChatApp" -Dexec.args="AQUI_VAI_O_BOT_TOKEN"
+
+---
+
 [requisitos]
 A comunicação com o chatbot deve ser através de comandos curtos, onde os comandos devem ser prefixados com o carectere barra (/) seguido pelo nome do comando.
 Os possíveis comandos estão listados abaixo na sessão de comandos.
