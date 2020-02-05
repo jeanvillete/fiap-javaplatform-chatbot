@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 import org.telegram.chatbot.tasks.exception.ChatNotFoundException;
+import org.telegram.chatbot.tasks.exception.TaskNotFoundException;
 import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 import java.util.regex.Matcher;
@@ -45,7 +46,7 @@ class MarkTaskAsDoneCommand extends Command {
                             taskId
                     );
                     returningTextMessage = "Boua! A atividade com id [" + taskId + "] marcada como pronta.";
-                } catch (ChatNotFoundException e) {
+                } catch (ChatNotFoundException | TaskNotFoundException e) {
                     returningTextMessage = "Tarefa com id [" + taskId + "] não foi encontrada, portando não foi marcada como pronta.";
                 }
 
