@@ -23,7 +23,7 @@ $ mvn exec:java -Dexec.mainClass="org.telegram.chatbot.tasks.ChatApp" -Dexec.arg
 A comunicação com o chatbot deve ser através de comandos curtos, onde os comandos devem ser prefixados com o carectere barra (/) seguido pelo nome do comando.
 Os possíveis comandos estão listados abaixo na sessão de comandos.
 
-Qualquer texto enviado pelo usuário que não for no formato desejado de um comando, o comando /ajuda deverá ser escrito (retornado par ao usuário), informando qual o formato correto esperado.
+Qualquer texto enviado pelo usuário que não for no formato desejado de um comando, o comando /ajuda deverá ser escrito (retornado para ao usuário), informando qual o formato correto esperado.
 
 ---
 
@@ -39,6 +39,23 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
 /ajuda | /?
   - comando de ajuda, que lista todos os comando possíveis
 
+/alterar:$id_tarefa o texto a ser alterado deve ser fornecido após o comando
+  - procura pela tarefa com identificador fornecido, então altera o texto da mesma
+  - o retorno deste comando deve ser um identificador, o mesmo fornecido no comando
+  - listar todas as tarefas atualmente cadastradas para o usuário corrente
+  - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
+  e.g;
+    /alterar:23 fazer tarefa de casa, aula de Persistência
+
+/check:$id_tarefa
+  - marca tarefa com o identificador fornecido como pronta
+  - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
+  e.g;
+    /pronta:23
+
+/limpar
+  - limpa todas as atividades da lista de tarefas do usuário corrente
+
 /listar
   - listar todas as tarefas atualmente cadastradas para o usuário corrente
 
@@ -48,14 +65,6 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
   e.g;
     /nova fazer tarefa de casa, aula de JAVA
 
-/alterar:$id_tarefa o texto a ser alterado deve ser fornecido após o comando
-  - procura pela tarefa com identificador fornecido, então altera o texto da mesma
-  - o retorno deste comando deve ser um identificador, o mesmo fornecido no comando
-  - listar todas as tarefas atualmente cadastradas para o usuário corrente
-  - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
-    /alterar:23 fazer tarefa de casa, aula de Persistência
-
 /remover:$id_tarefa
   - procura e remove a tarefa com o identificador fornecido
   - listar todas as tarefas atualmente cadastradas para o usuário corrente
@@ -63,20 +72,11 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
   e.g;
     /remover:23
 
-/check:$id_tarefa
-  - marca tarefa com o identificador fornecido como pronta
-  - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
-    /pronta:23
-
 /uncheck:$id_tarefa
   - marca tarefa com o identificador fornecido como NÃO pronta
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
   e.g;
     /pronta:23
-
-/limpar
-  - limpa todas as atividades da lista de tarefas do usuário corrente
 
 /mechamede
   - comando para que o usuário possa dizer como gosta de ser chamado, ou seja, me chame de...
