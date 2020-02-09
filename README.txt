@@ -78,12 +78,6 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
   e.g;
     /pronta:23
 
-/mechamede
-  - comando para que o usuário possa dizer como gosta de ser chamado, ou seja, me chame de...
-  - informa que vai se referenciar ao usuário pelo sem nomear, mas que se o usuário quiser indicar como gosta de ser chamado, o comando para isto é o 
-  e.g;
-    /mechamede Nome Usuário
-
 ---
 
 [componentes]
