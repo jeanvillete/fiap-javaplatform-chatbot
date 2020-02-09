@@ -2,13 +2,24 @@ package org.telegram.chatbot.tasks.command;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 class ListTaskCommand extends Command {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListTaskCommand.class);
+
     public ListTaskCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer, ChatSessionManagement chatSessionManagement) {
         super(telegramBot, commandsInitializer, chatSessionManagement);
+
+        LOGGER.debug(
+                "Initializing component [{}], which defines as regex [{}] and printHelp [{}]",
+                getClass().getName(),
+                getRegexCommand(),
+                printHelp()
+        );
     }
 
     @Override
@@ -28,28 +39,37 @@ class ListTaskCommand extends Command {
             while ((payloadCommand = this.getBlockingQueue().take()) != null) {
                 String plainText = payloadCommand.getPlainText();
 
+                LOGGER.debug("Received a new plainText [{}]", plainText);
+
                 if (!isItAValidCommand(plainText)) {
+                    LOGGER.debug("The plainText [{}] is not a valid command.", plainText);
                     continue;
                 }
                 if (!checkRegexForCurrentConcreteCommandInstance(plainText)) {
+                    LOGGER.debug("The plainText [{}] is not valid for current command.", plainText);
                     continue;
                 }
 
-                String taskListAsString = this.getChatSessionManagement().listTasks(payloadCommand.getChatId());
-                if (taskListAsString == null || taskListAsString.isEmpty()) {
-                    taskListAsString = "Nenhuma atividade foi encontrada na sua sessão...";
+                LOGGER.debug("The plainText [{}] looks proper for current command, so inferring content from it.", plainText);
+
+                String returningTextMessage = this.getChatSessionManagement().listTasks(payloadCommand.getChatId());
+                if (returningTextMessage == null || returningTextMessage.isEmpty()) {
+                    returningTextMessage = "Nenhuma atividade foi encontrada na sua sessão...";
                 } else {
-                    taskListAsString = "Tarefas registradas;\n\n" + taskListAsString;
+                    returningTextMessage = "Tarefas registradas;\n\n" + returningTextMessage;
                 }
+
+                LOGGER.debug("Returning response [{}] for chatId [{}]", returningTextMessage, payloadCommand.getChatId());
 
                 this.getTelegramBot().execute(
                         new SendMessage(
                                 payloadCommand.getChatId(),
-                                taskListAsString
+                                returningTextMessage
                         )
                 );
             }
         } catch (InterruptedException e) {
+            LOGGER.debug("Interrupted Exception raised;", e);
             throw new RuntimeException(e);
         }
     }

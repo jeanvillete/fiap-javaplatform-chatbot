@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class CommandsInitializer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandsInitializer.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandsInitializer.class);
 
     private Set<Command> concreteInstanceSetOfCommands;
 
@@ -41,7 +41,7 @@ public class CommandsInitializer {
                 })
                 .peek(concreteInstanceSetOfCommands::add)
                 .peek(concreteCommandInstance -> commandProducer.hookupBlockingQueue(concreteCommandInstance.getBlockingQueue()))
-                .map(Thread::new)
+                .map(concreteCommandInstance -> new Thread(concreteCommandInstance, concreteCommandInstance.getClass().getName()))
                 .forEach(Thread::start);
 
         LOGGER.debug("Every listed concrete command instantiated and with its new Thread started, maybe at this point, already working in parallel.");

@@ -2,6 +2,8 @@ package org.telegram.chatbot.tasks.command;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
 import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
@@ -11,8 +13,17 @@ import java.util.stream.Collectors;
 
 class HelpCommand extends Command {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelpCommand.class);
+
     public HelpCommand(TelegramBot telegramBot, CommandsInitializer commandsInitializer, ChatSessionManagement chatSessionManagement) {
         super(telegramBot, commandsInitializer, chatSessionManagement);
+
+        LOGGER.debug(
+                "Initializing component [{}], which defines as regex [{}] and printHelp [{}]",
+                getClass().getName(),
+                getRegexCommand(),
+                printHelp()
+        );
     }
 
     @Override
@@ -32,6 +43,8 @@ class HelpCommand extends Command {
             while ((payloadCommand = this.getBlockingQueue().take()) != null) {
                 String plainText = payloadCommand.getPlainText();
 
+                LOGGER.debug("Received a new plainText [{}]", plainText);
+
                 StringBuilder stringBuilder = new StringBuilder();
                 if (!isItAValidCommand(plainText)) {
                     stringBuilder
@@ -41,20 +54,25 @@ class HelpCommand extends Command {
                 }
 
                 if (!anyConcreteCommandMatchesRegex(plainText) || checkRegexForCurrentConcreteCommandInstance(plainText)) {
+                    String returningTextMessage = stringBuilder.toString() +
+                            getCommandsInitializer().getConcreteInstanceSetOfCommands()
+                                    .stream()
+                                    .map(Command::printHelp)
+                                    .sorted()
+                                    .collect(Collectors.joining("\n\n"));
+
+                    LOGGER.debug("Returning response [{}] for chatId [{}]", returningTextMessage, payloadCommand.getChatId());
+
                     this.getTelegramBot().execute(
                             new SendMessage(
                                     payloadCommand.getChatId(),
-                                    stringBuilder.toString() +
-                                            getCommandsInitializer().getConcreteInstanceSetOfCommands()
-                                                    .stream()
-                                                    .map(Command::printHelp)
-                                                    .sorted()
-                                                    .collect(Collectors.joining("\n\n"))
+                                    returningTextMessage
                             )
                     );
                 }
             }
         } catch (InterruptedException e) {
+            LOGGER.debug("Interrupted Exception raised;", e);
             throw new RuntimeException(e);
         }
     }

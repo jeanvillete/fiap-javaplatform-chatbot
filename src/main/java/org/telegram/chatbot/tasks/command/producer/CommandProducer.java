@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class CommandProducer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandProducer.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandProducer.class);
 
     private Set<BlockingQueue<PayloadCommand>> blockingQueues = new HashSet<>();
 

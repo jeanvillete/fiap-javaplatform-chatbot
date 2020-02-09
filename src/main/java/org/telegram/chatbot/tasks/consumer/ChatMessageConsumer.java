@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class ChatMessageConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessageConsumer.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessageConsumer.class);
     private static final int LIMIT = 100;
 
     private Integer offset = 0;

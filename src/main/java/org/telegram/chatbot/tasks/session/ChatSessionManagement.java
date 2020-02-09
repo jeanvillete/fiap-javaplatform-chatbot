@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class ChatSessionManagement {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSessionManagement.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSessionManagement.class);
 
     private Map<Long, ChatSession> chatSessionMap = new ConcurrentHashMap<>();
 

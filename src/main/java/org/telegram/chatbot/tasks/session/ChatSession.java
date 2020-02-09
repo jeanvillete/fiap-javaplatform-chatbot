@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 class ChatSession {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSession.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSession.class);
 
     private String name;
     private Set<Task> tasks = new TreeSet<>(Comparator.comparing(Task::getRecordTime));

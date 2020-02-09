@@ -12,7 +12,7 @@ import org.telegram.chatbot.tasks.session.ChatSessionManagement;
 
 public class ChatApp {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatApp.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatApp.class);
 
     public static void main(String[] args) throws InterruptedException {
         LOGGER.debug("ChatApp just started with arguments [{}]", args);
