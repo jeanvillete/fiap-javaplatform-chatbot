@@ -1,5 +1,7 @@
 package org.telegram.chatbot.tasks.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.chatbot.tasks.exception.ChatNotFoundException;
 
 import java.util.Map;
@@ -11,7 +13,13 @@ import java.util.stream.Stream;
 
 public class ChatSessionManagement {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSessionManagement.class.getName());
+
     private Map<Long, ChatSession> chatSessionMap = new ConcurrentHashMap<>();
+
+    public ChatSessionManagement() {
+        LOGGER.debug("Initializing component ChatSessionManagement.");
+    }
 
     public String addTask(Long chatId, String description) {
         Task taskToBeInserted = new Task().setDescription(description);

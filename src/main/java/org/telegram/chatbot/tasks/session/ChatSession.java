@@ -1,5 +1,7 @@
 package org.telegram.chatbot.tasks.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.chatbot.tasks.exception.TaskNotFoundException;
 
 import java.util.Collections;
@@ -9,8 +11,14 @@ import java.util.TreeSet;
 
 class ChatSession {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatSession.class.getName());
+
     private String name;
     private Set<Task> tasks = new TreeSet<>(Comparator.comparing(Task::getRecordTime));
+
+    public ChatSession() {
+        LOGGER.debug("Initializing component ChatSession.");
+    }
 
     String getName() {
         return name;

@@ -3,8 +3,10 @@ package org.telegram.chatbot.tasks.consumer;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.GetUpdates;
 import com.pengrad.telegrambot.response.GetUpdatesResponse;
-import org.telegram.chatbot.tasks.command.producer.CommandProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.chatbot.tasks.command.payload.PayloadCommand;
+import org.telegram.chatbot.tasks.command.producer.CommandProducer;
 import org.telegram.chatbot.tasks.exception.ChatBadResponseException;
 
 import java.util.List;
@@ -16,11 +18,16 @@ import java.util.stream.Collectors;
 
 public class ChatMessageConsumer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessageConsumer.class.getName());
+    private static final int LIMIT = 100;
+
     private Integer offset = 0;
     private TelegramBot telegramBot;
     private CommandProducer commandProducer;
 
     public ChatMessageConsumer(TelegramBot telegramBot, CommandProducer commandProducer) {
+        LOGGER.debug("Initializing component ChatMessageConsumer.");
+
         this.telegramBot = telegramBot;
         this.commandProducer = commandProducer;
     }
@@ -33,10 +40,15 @@ public class ChatMessageConsumer {
     }
 
     void consume() throws ChatBadResponseException {
+        LOGGER.debug(
+                "Invoking telegram REST Api with parameters, limit [{}] and offset [{}]",
+                LIMIT,
+                this.offset
+        );
         GetUpdatesResponse getUpdatesResponse = this.telegramBot.execute(
                 new GetUpdates()
-                        .limit(100)
-                        .offset(offset)
+                        .limit(LIMIT)
+                        .offset(this.offset)
         );
 
         if (!getUpdatesResponse.isOk()) {
