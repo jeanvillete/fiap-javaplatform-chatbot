@@ -12,6 +12,7 @@ Prof. Danilo Vitoriano
 [instrução de execução]
 
 Após efetuar o checkout do código, utilize o comando abaixo para excução da aplicação.
+  NOTA: Observe a necessidade do fornecimento do "botToken" no comando maven listado abaixo.
   NOTA: Requisitos, maven e Java 8.
 
 $ mvn exec:java -Dexec.mainClass="org.telegram.chatbot.tasks.ChatApp" -Dexec.args="AQUI_VAI_O_BOT_TOKEN" -Dorg.slf4j.simpleLogger.defaultLogLevel=debug
