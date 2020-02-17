@@ -152,3 +152,9 @@ CommandProducer
   - este componente tem a responsabilidade básica de manter comunicação das mensagens/payloads que estão chegando na Thread principal (Thread#Main) e disponibilizar estas mensagens (PayloadCommand) para todas as instâncias concretas de chat.command.Command que estão sendo executadas, cada uma na sua thread específica
   - na inicialização do componente CommandProducer, este deve procurar por toda classe concreta de chat.command.Command, instanciar cada uma destas classes, e obter de cada uma a instância de BlockingQueue<PayloadCommand>; getBlockingQueue():BlockingQueue<PayloadCommand>
   - o componente CommandProducer deve manter num conjunto (Set<BlockingQueue<PayloadCommand>>) todas as instâncias de BlockingQueue retornada de cada classe concreta de chat.command.Command instanciada, e toda vez que uma mensagem/payload (PayloadCommand, comando texto livre) chegar, deve-se disponibilizar este ultimo para todos itens no conjunto de BlockingQueue mantido no CommandProducer
+
+---
+
+[diagrama]
+
+![](telegram-chat-bot-diagram.jpg)
