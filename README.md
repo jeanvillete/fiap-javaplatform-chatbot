@@ -4,7 +4,9 @@ O bot corrente deve ser utilizado para um cadastro simples e controle de ativida
 Esta é uma atividade que apresenta fundamentos, concorrência e estruturas de dados em JAVA aplicados no ChatBot integrado com o Telegram.
 
 Curso: MBA FULLSTACK DEVELOPER, MICROSERVICES, CLOUD & IoT
+
 Matéria: Java Platform
+
 Prof. Danilo Vitoriano
 
 ---
@@ -12,8 +14,10 @@ Prof. Danilo Vitoriano
 [instrução de execução]
 
 Após efetuar o checkout do código, utilize o comando abaixo para excução da aplicação.
-  NOTA: Observe a necessidade do fornecimento do "botToken" no comando maven listado abaixo.
-  NOTA: Requisitos, maven e Java 8.
+
+  **NOTA:** Observe a necessidade do fornecimento do "botToken" no comando maven listado abaixo.
+  
+  **NOTA:** Requisitos, maven e Java 8.
 
 $ mvn exec:java -Dexec.mainClass="org.telegram.chatbot.tasks.ChatApp" -Dexec.args="AQUI_VAI_O_BOT_TOKEN" -Dorg.slf4j.simpleLogger.defaultLogLevel=debug
 
@@ -44,13 +48,13 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
   - o retorno deste comando deve ser um identificador, o mesmo fornecido no comando
   - listar todas as tarefas atualmente cadastradas para o usuário corrente
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
+  - e.g;
     /alterar:23 fazer tarefa de casa, aula de Persistência
 
 /check:$id_tarefa
   - marca tarefa com o identificador fornecido como pronta
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
+  - e.g;
     /pronta:23
 
 /limpar
@@ -62,20 +66,20 @@ Abaixo segue a lista de comandos, e quando necessário seus exemplos;
 /nova o texto da terefa deve vir após o comando
   - o retorno deste comando deve ser um identificador, provavelmente um numérico incremental
   - listar todas as tarefas atualmente cadastradas para o usuário corrente
-  e.g;
+  - e.g;
     /nova fazer tarefa de casa, aula de JAVA
 
 /remover:$id_tarefa
   - procura e remove a tarefa com o identificador fornecido
   - listar todas as tarefas atualmente cadastradas para o usuário corrente
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
+  - e.g;
     /remover:23
 
 /uncheck:$id_tarefa
   - marca tarefa com o identificador fornecido como NÃO pronta
   - caso não exista nenhuma atividade/tarefa com o identificador fornecido, então informar ao usuário.
-  e.g;
+  - e.g;
     /pronta:23
 
 ---
@@ -155,6 +159,6 @@ CommandProducer
 
 ---
 
-[diagrama]
+[diagrama de componentes]
 
 ![](telegram-chat-bot-diagram.jpg)
