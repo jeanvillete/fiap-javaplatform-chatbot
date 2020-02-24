@@ -2,9 +2,11 @@
 
 O bot corrente deve ser utilizado para um cadastro simples e controle de atividades/tarefas, como por exemplo, informar se determinada está concluída ou não.  
 Esta é uma atividade que apresenta fundamentos, concorrência e estruturas de dados em JAVA aplicados no ChatBot integrado com o Telegram.  
-Curso: MBA FULLSTACK DEVELOPER, MICROSERVICES, CLOUD & IoT  
-Matéria: Java Platform  
-Prof. Danilo Vitoriano  
+
+###### Escola: FIAP
+###### Curso: MBA FULLSTACK DEVELOPER, MICROSERVICES, CLOUD & IoT  
+###### Matéria: Java Platform  
+###### Prof. Danilo Vitoriano  
 
 ---
 
