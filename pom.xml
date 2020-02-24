@@ -69,4 +69,12 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>jeanvillete</name>
+            <url>https://maven.pkg.github.com/jeanvillete/fiap-javaplatform-chatbot</url>
+        </repository>
+    </distributionManagement>
+
 </project>
